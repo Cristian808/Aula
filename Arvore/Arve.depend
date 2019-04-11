@@ -1,0 +1,62 @@
+# depslib dependency file v1.0
+1551300066 source:c:\users\cristian\desktop\questoes\c\quest\arve\main.c
+	<stdio.h>
+	<stdlib.h>
+	"Arvore.h"
+
+1553101199 
+
+1551300066 c:\users\cristian\desktop\questoes\c\quest\arve\arvore.h
+	"No.h"
+
+1551300066 c:\users\cristian\desktop\questoes\c\quest\arve\no.h
+
+1552497844 source:c:\users\cristian\desktop\questoes\c\certos\arvore\main.c
+	<stdio.h>
+	<stdlib.h>
+	"Arvore.h"
+	"fila.h"
+	"NoFila.h"
+	"No.h"
+
+1552494787 c:\users\cristian\desktop\questoes\c\certos\arvore\arvore.h
+	"No.h"
+
+1551300066 c:\users\cristian\desktop\questoes\c\certos\arvore\no.h
+
+1552494279 c:\users\cristian\desktop\questoes\c\certos\arvore\fila.h
+	"NoFila.h"
+
+1552494250 c:\users\cristian\desktop\questoes\c\certos\arvore\nofila.h
+
+1554318113 source:c:\users\cristian\desktop\nova pasta\arvore\main.c
+	<stdio.h>
+	<stdlib.h>
+	"Arvore.h"
+	"No.h"
+	<ctype.h>
+	<string.h>
+
+1553720482 c:\users\cristian\desktop\nova pasta\arvore\arvore.h
+	"No.h"
+
+1553720482 c:\users\cristian\desktop\nova pasta\arvore\no.h
+
+1553101199 c:\users\cristian\desktop\nova pasta\arvore\fila.h
+	"NoFila.h"
+
+1553101198 c:\users\cristian\desktop\nova pasta\arvore\nofila.h
+
+1554318194 source:/tmp/guest-rwvvka/Área de Trabalho/Aula-master/Arvore/main.c
+	<stdio.h>
+	<stdlib.h>
+	"Arvore.h"
+	"No.h"
+	<ctype.h>
+	<string.h>
+
+1554318194 /tmp/guest-rwvvka/Área de Trabalho/Aula-master/Arvore/Arvore.h
+	"No.h"
+
+1554318194 /tmp/guest-rwvvka/Área de Trabalho/Aula-master/Arvore/No.h
+
