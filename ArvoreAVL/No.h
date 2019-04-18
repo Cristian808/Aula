@@ -7,6 +7,7 @@ struct no{
     int info;
     No* esq;
     No* dir;
+    int h;
 };
 
 No* alocarNo();

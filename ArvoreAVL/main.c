@@ -264,13 +264,50 @@ void rotacaoSimplesEsq(No** raiz){
 }
 
 void rotacaoDuplaEsq(No** raiz){
-    rotacaoSimplesDir(*raiz->dir);
-    rotacaoSimplesEsq(*raiz);
+    rotacaoSimplesDir((*raiz)->dir);
+    rotacaoSimplesEsq(raiz);
 }
 
 void rotacaoDuplaDir(No** raiz){
-    rotacaoSimplesEsq(*raiz->esq);
-    rotacaoSimplesDir(*raiz);
+    rotacaoSimplesEsq((*raiz)->esq);
+    rotacaoSimplesDir(raiz);
+}
+
+void checkAVL(No** raiz){
+    int b= (*raiz)->dir->h - (*raiz)->esq->h;
+    if (b>=2){
+        int b2=(*raiz)->dir->dir->h - (*raiz)->dir->esq->h;
+        if(b2>=0){
+            rotacaoSimplesEsq(raiz);
+            mudaH((*raiz)->esq);
+        }
+        else{
+            rotacaoDuplaEsq(raiz);
+        }
+    }
+    if(b<=-2){
+        int b2=(*raiz)->esq->esq->h - (*raiz)->esq->dir->h;
+        if(b2<=0){
+            rotacaoSimplesDir(raiz);
+            mudaH((*raiz)->dir);
+        }
+        else{
+            rotacaoDuplaDir(raiz);
+        }
+    }
+}
+
+void mudaH(No* raiz){
+    if((raiz->dir!=NULL) && (raiz->esq==NULL)){
+        raiz->h=raiz->dir->h +1;
+    }
+    if((raiz->dir==NULL) && (raiz->esq!=NULL)){
+        raiz->h=raiz->esq->h +1;
+    }
+
+    else if((*raiz)->dir->h){
+
+    }
 }
 
 
