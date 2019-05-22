@@ -71,3 +71,14 @@
 
 1554327482 c:\users\cristian\desktop\nova pasta\arvoresimples\no.h
 
+1558543639 source:c:\users\cristian\desktop\arvoreavl\main.c
+	<stdio.h>
+	<stdlib.h>
+	"Arvore.h"
+	"No.h"
+
+1556055340 c:\users\cristian\desktop\arvoreavl\arvore.h
+	"No.h"
+
+1556055340 c:\users\cristian\desktop\arvoreavl\no.h
+

@@ -8,6 +8,7 @@ No* alocarNo(){
     No* no = (No*) malloc(sizeof(No));
     no->esq = NULL;
     no->dir = NULL;
+    no->h = 0;
     return no;
 }
 
@@ -41,33 +42,47 @@ void construirArvore(Arvore* a, int n){
         a->raiz->info = n;
         }
     else{
-        colocarNosArvore(a->raiz, n);
+        colocarNosArvore(&(a->raiz), n);
     }
 }
 
-void colocarNosArvore(No* no, int n){
-    if(verificaN(no, n)!=1){
-        if((no->info>n)&&(no->esq == NULL)){
-            No* aux=alocarNo();
-            aux->info=n;
-            no->esq=aux;
-            return;
+void colocarNosArvore(No** no, int n){
+    if(verificaN(*no, n)!=1){
+        if(((*no)->info>n)&&((*no)->esq == NULL)){
+            (*no)->esq=alocarNo();
+            (*no)->esq->info=n;
         }
-        else if((no->info<n)&&(no->dir == NULL)){
-            No* aux=alocarNo();
-            aux->info=n;
-            no->dir=aux;
-            return;
+        else if(((*no)->info<n)&&((*no)->dir == NULL)){
+            (*no)->dir=alocarNo();
+            (*no)->dir->info=n;
         }
-        else if(no->info>n){
-            colocarNosArvore(no->esq, n);
-            return;
+        else if((*no)->info>n){
+            colocarNosArvore(&(*no)->esq, n);
         }
-        else if(no->info<n){
-            colocarNosArvore(no->dir, n);
-            return;
+        else if((*no)->info<n){
+            colocarNosArvore(&(*no)->dir, n);
         }
+        mudaH(*no);
+        checkAVL(no);
+    }
+}
 
+void printH(No* raiz){
+    if((raiz->dir==NULL) && (raiz->esq==NULL)){
+        printf("%d H = %d\n", raiz->info ,raiz->h);
+    }
+    else if((raiz->dir!=NULL) && (raiz->esq==NULL)){
+        printH(raiz->dir);
+        printf("%d H = %d\n", raiz->info ,raiz->h);
+    }
+    else if((raiz->dir==NULL) && (raiz->esq!=NULL)){
+        printH(raiz->esq);
+        printf("%d H = %d\n", raiz->info ,raiz->h);
+    }
+    else if((raiz->dir!=NULL) && (raiz->esq!=NULL)){
+        printH(raiz->dir);
+        printH(raiz->esq);
+        printf("%d H = %d\n", raiz->info ,raiz->h);
     }
 }
 
@@ -175,6 +190,7 @@ void removeNoArvore(Arvore* a, int n){
     removeNo(a->raiz, n);
 }
 
+/*
 void removeNo(No* no, int n){
     if((verificaN(no, n))!=1){
         No* noaux=buscaNo(no, n);
@@ -248,80 +264,246 @@ void removeNo(No* no, int n){
         }
     }
 }
+*/
 
-void rotacaoSimplesDir(No** raiz){
-    No* aux=(*raiz)->esq->dir;
-    (*raiz)->esq->dir=*raiz;
-    (*raiz)=(*raiz)->esq;
-    (*raiz)->dir->esq=aux;
-}
 
-void rotacaoSimplesEsq(No** raiz){
-    No* aux=(*raiz)->dir->esq;
-    (*raiz)->dir->esq=*raiz;
-    (*raiz)=(*raiz)->dir;
-    (*raiz)->esq->dir=aux;
-}
-
-void rotacaoDuplaEsq(No** raiz){
-    rotacaoSimplesDir((*raiz)->dir);
-    rotacaoSimplesEsq(raiz);
-}
-
-void rotacaoDuplaDir(No** raiz){
-    rotacaoSimplesEsq((*raiz)->esq);
-    rotacaoSimplesDir(raiz);
-}
-
-void checkAVL(No** raiz){
-    int b= (*raiz)->dir->h - (*raiz)->esq->h;
-    if (b>=2){
-        int b2=(*raiz)->dir->dir->h - (*raiz)->dir->esq->h;
-        if(b2>=0){
-            rotacaoSimplesEsq(raiz);
-            mudaH((*raiz)->esq);
-        }
-        else{
-            rotacaoDuplaEsq(raiz);
+int removeNo(No* no, int n){
+    if(no == NULL){
+        printf("Valor nao existe\n");
+        return 0;
+    }
+    int res;
+    if(n < no->info){
+        if((res=removeNo(no->esq, n))==1){
+            if(contaAVL(&no)>=2){
+                if(no->dir->esq->h <= no->dir->dir->h){
+                    rotacaoSimplesEsq(&no);
+                }
+                else{
+                    rotacaoDuplaEsq(&no);
+                }
+            }
         }
     }
-    if(b<=-2){
-        int b2=(*raiz)->esq->esq->h - (*raiz)->esq->dir->h;
-        if(b2<=0){
+    if(n> no->info){
+        if((res=removeNo((no->dir), n))==1){
+            if(contaAVL(&no)<=-2){
+                if(no->esq->dir->h <= no->esq->esq->h){
+                    rotacaoSimplesDir(&no);
+                }
+                else{
+                    rotacaoDuplaDir(&no);
+                }
+            }
+        }
+    }
+    if(n == no->info){
+        if((no->esq==NULL)||(no->dir==NULL)){
+            No* aux=no;
+            if(no->esq != NULL){
+                no=no->esq;
+            }
+            else{
+                no=no->dir;
+            }
+            desalocarNo(aux);
+        }
+        else{
+            No* menor=menorSucessor(no->dir);
+            no->info = menor->info;
+            removeNo((no->dir), no->info);
+            if(contaAVL(&no)<= -2){
+                if(no->esq->dir->h <= no->esq->esq->h){
+                    rotacaoSimplesDir(&no);
+                }
+                else{
+                    rotacaoDuplaDir(&no);
+                }
+            }
+        }
+        return 1;
+    }
+    return res;
+}
+
+void rotacaoSimplesDir (No ** no){
+    No *aux = (*no)->dir->esq;
+    (*no)->dir->esq = (*no);
+    (*no)= (*no)->dir;
+    (*no)->esq->dir = aux;
+    mudaH(*no);
+}
+
+void rotacaoSimplesEsq (No ** no){
+    No *aux = (*no)->esq->dir;
+    (*no)->esq->dir = (*no);
+    (*no)= (*no)->esq;
+    (*no)->dir->esq = aux;
+    mudaH(*no);
+}
+
+void rotacaoDuplaEsq (No ** no){
+    rotacaoSimplesDir(&((*no)->esq));
+    rotacaoSimplesEsq(&(*no));
+}
+
+void rotacaoDuplaDir (No ** no){
+    rotacaoSimplesEsq(&(*no)->dir);
+    rotacaoSimplesDir(&(*no));
+}
+
+int contaAVL ( No ** no){
+
+    if (((*no)->dir) != NULL && (*no)->esq != NULL){
+        return (*no)->dir->h - (*no)->esq->h;
+    }
+
+    else if (((*no)->dir) == NULL && (*no)->esq == NULL){
+        return 0;
+    }
+
+    else if (((*no)->dir) == NULL || (*no)->esq == NULL){
+
+        if (((*no)->dir) == NULL){
+            return (0-1) - (*no)->esq->h;
+        }
+
+        if (((*no)->esq) == NULL){
+            return (*no)->dir->h + 1;
+        }
+    }
+
+}
+
+void checkAVL (No ** no){
+
+    int b = contaAVL(&(*no));
+
+    if(b >= 2){
+        int b2 = contaAVL(&(*no)->dir);
+
+        if (b2 >= 0){
+            rotacaoSimplesDir(&(*no));
+        }
+        else {
+            rotacaoDuplaDir(&(*no));
+        }
+    }
+    else if (b <= -2){
+        int b2 = contaAVL(&(*no)->esq);
+        if (b2 <= 0){
+            rotacaoSimplesEsq(&(*no));
+        }
+        else {
+            rotacaoDuplaEsq(&(*no));
+        }
+    }
+    mudaH(*no);
+}
+/*
+void checkAVL(No** raiz){
+    int b=0;
+    if((*raiz)->dir!=NULL&&(*raiz)->esq!=NULL){
+        b=  ((*raiz)->esq->h) - ((*raiz)->dir->h);
+    }
+    else if((*raiz)->dir==NULL&&(*raiz)->esq!=NULL){
+        b= ((*raiz)->esq->h)+1;
+    }
+    else if((*raiz)->dir!=NULL&&(*raiz)->esq==NULL){
+        b= -(((*raiz)->dir->h)+1);
+    }
+    if (b>=2){
+        int b2=0;
+        if((*raiz)->esq->dir!=NULL&&(*raiz)->esq->esq!=NULL){
+            b2=((*raiz)->esq->esq->h) - ((*raiz)->esq->dir->h);
+        }
+        else if((*raiz)->esq->dir==NULL&&(*raiz)->esq->esq!=NULL){
+            b2=((*raiz)->esq->esq->h)+1;
+        }
+        else if((*raiz)->esq->dir!=NULL&&(*raiz)->esq->esq==NULL){
+            b2=-(((*raiz)->esq->dir->h)+1);
+        }
+        if(b2>=0){
             rotacaoSimplesDir(raiz);
-            mudaH((*raiz)->dir);
         }
         else{
             rotacaoDuplaDir(raiz);
         }
     }
+    if(b<=-2){
+        int b2=0;
+        if((*raiz)->dir->dir!=NULL&&(*raiz)->dir->esq!=NULL){
+            b2=((*raiz)->dir->esq->h)- ((*raiz)->dir->dir->h);
+        }
+        else if(((*raiz)->dir->dir==NULL&&(*raiz)->dir->esq!=NULL)){
+            b2=((*raiz)->dir->esq->h)+1;
+        }
+        else if((*raiz)->dir->dir!=NULL&&(*raiz)->dir->esq==NULL){
+            b2=-(((*raiz)->dir->dir->h)+1);
+        }
+        if(b2<=0){
+            rotacaoSimplesEsq(raiz);
+        }
+        else{
+            rotacaoDuplaEsq(raiz);
+        }
+    }
 }
 
+*/
 void mudaH(No* raiz){
-    if((raiz->dir!=NULL) && (raiz->esq==NULL)){
+    if((raiz->dir==NULL) && (raiz->esq==NULL)){
+        raiz->h=0;
+    }
+    else if((raiz->dir!=NULL) && (raiz->esq==NULL)){
+        mudaH(raiz->dir);
         raiz->h=raiz->dir->h +1;
     }
-    if((raiz->dir==NULL) && (raiz->esq!=NULL)){
+    else if((raiz->dir==NULL) && (raiz->esq!=NULL)){
+        mudaH(raiz->esq);
         raiz->h=raiz->esq->h +1;
     }
-
-    else if((*raiz)->dir->h){
-
+    else if((raiz->dir!=NULL) && (raiz->esq!=NULL)){
+        mudaH(raiz->dir);
+        mudaH(raiz->esq);
+        if((raiz->dir->h) == (raiz->esq->h)){
+            raiz->h=raiz->dir->h+1;
+        }
+        else if((raiz->dir->h) > (raiz->esq->h)){
+            raiz->h=raiz->dir->h+1;
+        }
+        else if((raiz->dir->h) < (raiz->esq->h)){
+            raiz->h=raiz->esq->h+1;
+        }
     }
 }
 
+void menu(){
+    int x=1;
+    Arvore* a=alocaArvore();
+    while(x!=0){
+        printf("Para inserir digite 1\nPara excluir digite 2\nPara imprimir a arvore digite 3\nPara sair digite 0\n");
+        scanf("%d", &x);
+        int n;
+        if(x==1){
+            printf("Insira o valor a ser inserido:\n");
+            scanf("%d", &n);
+            construirArvore(a, n);
+            printH(a->raiz);
+        }
+        else if(x==2){
+            printf("Insira o valor a ser removido:\n");
+            scanf("%d", &n);
+            removeNoArvore(a, n);
+        }
+        else if(x==3){
+            imprimirArvore(a);
+        }
+    }
+    desalocaArvore(a);
+}
 
 int main(){
-    Arvore* a=alocaArvore();
-    int n;
-    for(int cont=0; cont<9; cont++){
-        scanf("%d", &n);
-        construirArvore(a, n);
-    }
-    imprimirArvore(a);
-    scanf("%d", &n);
-    removeNoArvore(a, n);
-    imprimirArvore(a);
-    desalocaArvore(a);
+    menu();
     return 0;
 }
