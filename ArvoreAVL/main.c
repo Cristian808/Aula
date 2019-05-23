@@ -190,7 +190,7 @@ void removeNoArvore(Arvore* a, int n){
     removeNo(a->raiz, n);
 }
 
-/*
+
 void removeNo(No* no, int n){
     if((verificaN(no, n))!=1){
         No* noaux=buscaNo(no, n);
@@ -264,9 +264,9 @@ void removeNo(No* no, int n){
         }
     }
 }
-*/
 
 
+/*
 int removeNo(No* no, int n){
     if(no == NULL){
         printf("Valor nao existe\n");
@@ -325,7 +325,7 @@ int removeNo(No* no, int n){
     }
     return res;
 }
-
+*/
 void rotacaoSimplesDir (No ** no){
     No *aux = (*no)->dir->esq;
     (*no)->dir->esq = (*no);
@@ -372,7 +372,6 @@ int contaAVL ( No ** no){
             return (*no)->dir->h + 1;
         }
     }
-
 }
 
 void checkAVL (No ** no){
@@ -403,25 +402,25 @@ void checkAVL (No ** no){
 /*
 void checkAVL(No** raiz){
     int b=0;
-    if((*raiz)->dir!=NULL&&(*raiz)->esq!=NULL){
-        b=  ((*raiz)->esq->h) - ((*raiz)->dir->h);
+    if((*raiz)->dir!=NULL && (*raiz)->esq!=NULL){
+        b=  ((*raiz)->dir->h) - ((*raiz)->esq->h);
     }
-    else if((*raiz)->dir==NULL&&(*raiz)->esq!=NULL){
-        b= ((*raiz)->esq->h)+1;
+    else if((*raiz)->dir==NULL && (*raiz)->esq!=NULL){
+        b= -(((*raiz)->esq->h)+1);
     }
-    else if((*raiz)->dir!=NULL&&(*raiz)->esq==NULL){
-        b= -(((*raiz)->dir->h)+1);
+    else if((*raiz)->dir!=NULL && (*raiz)->esq==NULL){
+        b= ((*raiz)->dir->h)+1;
     }
     if (b>=2){
         int b2=0;
-        if((*raiz)->esq->dir!=NULL&&(*raiz)->esq->esq!=NULL){
-            b2=((*raiz)->esq->esq->h) - ((*raiz)->esq->dir->h);
+        if((*raiz)->dir->dir!=NULL&&(*raiz)->dir->esq!=NULL){
+            b2=((*raiz)->dir->dir->h) - ((*raiz)->dir->esq->h);
         }
-        else if((*raiz)->esq->dir==NULL&&(*raiz)->esq->esq!=NULL){
-            b2=((*raiz)->esq->esq->h)+1;
+        else if((*raiz)->dir->dir==NULL&&(*raiz)->dir->esq!=NULL){
+            b2=-(((*raiz)->dir->esq->h)+1);
         }
-        else if((*raiz)->esq->dir!=NULL&&(*raiz)->esq->esq==NULL){
-            b2=-(((*raiz)->esq->dir->h)+1);
+        else if((*raiz)->dir->dir!=NULL&&(*raiz)->dir->esq==NULL){
+            b2=((*raiz)->dir->dir->h)+1;
         }
         if(b2>=0){
             rotacaoSimplesDir(raiz);
@@ -432,14 +431,14 @@ void checkAVL(No** raiz){
     }
     if(b<=-2){
         int b2=0;
-        if((*raiz)->dir->dir!=NULL&&(*raiz)->dir->esq!=NULL){
-            b2=((*raiz)->dir->esq->h)- ((*raiz)->dir->dir->h);
+        if((*raiz)->esq->dir!=NULL&&(*raiz)->esq->esq!=NULL){
+            b2=((*raiz)->esq->dir->h)- ((*raiz)->esq->esq->h);
         }
-        else if(((*raiz)->dir->dir==NULL&&(*raiz)->dir->esq!=NULL)){
-            b2=((*raiz)->dir->esq->h)+1;
+        else if(((*raiz)->esq->dir==NULL&&(*raiz)->esq->esq!=NULL)){
+            b2=-(((*raiz)->esq->esq->h)+1);
         }
-        else if((*raiz)->dir->dir!=NULL&&(*raiz)->dir->esq==NULL){
-            b2=-(((*raiz)->dir->dir->h)+1);
+        else if((*raiz)->esq->dir!=NULL&&(*raiz)->esq->esq==NULL){
+            b2=((*raiz)->esq->dir->h)+1;
         }
         if(b2<=0){
             rotacaoSimplesEsq(raiz);
@@ -449,8 +448,8 @@ void checkAVL(No** raiz){
         }
     }
 }
-
 */
+
 void mudaH(No* raiz){
     if((raiz->dir==NULL) && (raiz->esq==NULL)){
         raiz->h=0;

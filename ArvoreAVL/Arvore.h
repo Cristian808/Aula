@@ -24,5 +24,6 @@ void rotacaoSimplesEsq(No** raiz);
 void menu();
 void checkAVL(No** raiz);
 void mudaH(No* raiz);
+void removeNo(No* no, int n);
 
 #endif // ARVORE_H_INCLUDED
