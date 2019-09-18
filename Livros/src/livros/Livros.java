@@ -10,28 +10,31 @@ package livros;
  * @author professor
  */
 public class Livros {
-    
-    private Autores autor= new Autores();
-    private String nome;
-    private String descricao;
-    private String isbn;
-    private double valor;
-    
+
+    private String nome, descricao, isbn;
+    private double valor; 
+    Autores autor= new Autores();
+
     public void mostrarInformacoes(){
         System.out.println("Nome: "+this.nome);
         System.out.println("Descrição: "+this.descricao);
         System.out.println("Valor: "+this.valor);
         System.out.println("ISBN: "+this.isbn);
         
-        this.autor.mostrarInformacoesAutor();
+        if(autor.verificaAutor(this.autor) == true){
+            this.autor.mostrarInformacoesAutor();
+        }else{
+            System.out.println("Não há altores");
+        }
+        
     }
-    
+
     public void ajustarValor(double reajuste){
         if(reajuste > 0.3){
             System.out.println("Reajuste nao permitido");
         }
         else{
-            this.valor += this.valor * reajuste;
+            setValor(this.valor * reajuste);
         }
     }
 
@@ -74,5 +77,4 @@ public class Livros {
     public void setValor(double valor) {
         this.valor = valor;
     }
-        
 }

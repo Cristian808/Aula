@@ -9,6 +9,13 @@ public class Autores {
         System.out.println("CPF do autor: " +this.cpfAutor);
     }
 
+    public boolean verificaAutor(Autores autor){
+        if(autor==null){
+            return false;
+        }
+        return true;
+    }
+
     public String getNomeAutor() {
         return nomeAutor;
     }
