@@ -12,6 +12,15 @@ package projeto.model;
 public class Turma_VO {
     private int fkDisciplina;
     private int fkProfessor;
+    private int idTurma;
+
+    public int getIdTurma() {
+        return idTurma;
+    }
+
+    public void setIdTurma(int idTurma) {
+        this.idTurma = idTurma;
+    }
 
     public int getFkDisciplina() {
         return fkDisciplina;

@@ -13,7 +13,7 @@ import java.math.BigInteger;
  */
 public class Professor_VO {
     private int codProfessor;
-    private BigInteger cpf;
+    private String cpf;
     private String nome;
     private int cfe;
 
@@ -25,11 +25,11 @@ public class Professor_VO {
         this.codProfessor = codProfessor;
     }
 
-    public BigInteger getCpf() {
+    public String getCpf() {
         return cpf;
     }
 
-    public void setCpf(BigInteger cpf) {
+    public void setCpf(String cpf) {
         this.cpf = cpf;
     }
 

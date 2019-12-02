@@ -6,7 +6,9 @@
 package projeto.model;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import projetobd.Model.Conexao;
 
 /**
@@ -22,7 +24,7 @@ public class HistoricoEscolar_RN {
        }
 
 //CADASTROS---------------------------------------------------------------------
-       public boolean inserirEndereco(HistoricoEscolar_VO obj)throws Exception
+       public boolean inserirHistoricoEscolar(HistoricoEscolar_VO obj)throws Exception
        {
               //CADASTRAR O FORNECEDOR DE RECURSOS     
               try
@@ -46,7 +48,7 @@ public class HistoricoEscolar_RN {
        
        
 //EDITAR------------------------------------------------------------------------
-       public boolean editarEndereco(HistoricoEscolar_VO obj) throws Exception
+       public boolean editarHistoricoEscolar(HistoricoEscolar_VO obj) throws Exception
        {
               try
               {
@@ -70,7 +72,7 @@ public class HistoricoEscolar_RN {
        
        
 //EXCLUIR------------------------------------------------------------------------
-       public boolean excluirEndereco(HistoricoEscolar_VO obj) throws Exception
+       public boolean excluirHistoricoEscolar(HistoricoEscolar_VO obj) throws Exception
        {
               try
               {
@@ -86,5 +88,31 @@ public class HistoricoEscolar_RN {
               {
                      throw new Exception("Falha ao editar acessos do gerente:\n" + e.getMessage());
               }
+       }
+       
+       public boolean getHistoricoEscolar(HistoricoEscolar_VO obj) throws Exception
+       {
+            try
+            {
+                conex = new Conexao();
+                Statement stm = conex.conectar().createStatement();
+                ResultSet rs = stm.executeQuery("select * from [BDGrupo2].[dbo].[UNI_Historico_Escolar] where Id_Historico = " + obj.getIdHistorico());
+                
+                while (rs.next())
+                     {
+                        obj.setDataCursada(rs.getDate("DATA_CURSADA"));
+                        obj.setNota(rs.getInt("NOTA"));
+                        obj.setDisciplinas("DISCIPLINAS");
+                                   
+                        return true;
+                     }
+                    
+                return true;
+                            
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Falha ao editar acessos do gerente:\n" + e.getMessage());
+            }
        }
 }

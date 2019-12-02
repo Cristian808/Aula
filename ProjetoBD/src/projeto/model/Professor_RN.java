@@ -6,7 +6,9 @@
 package projeto.model;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import projetobd.Model.Conexao;
 
 /**
@@ -22,17 +24,18 @@ public class Professor_RN {
        }
 
 //CADASTROS---------------------------------------------------------------------
-       public boolean inserirEndereco(Professor_VO obj)throws Exception
+       public boolean inserirProfessor(Professor_VO obj)throws Exception
        {
               //CADASTRAR O FORNECEDOR DE RECURSOS     
               try
               {
                      conex = new Conexao();
-                     PreparedStatement ps2 = conex.conectar().prepareCall("{call dbo.insertEndereco_sp(?,?,?)}");
+                     PreparedStatement ps2 = conex.conectar().prepareCall("{call dbo.insertProfessor_sp(?,?,?,?)}");
                      
-                     ps2.setInt(1, obj.getNota());
-                     ps2.setDate(2, obj.getDataCursada());
-                     ps2.setString(3, obj.getDisciplinas());
+                     ps2.setInt(1, obj.getCodProfessor());
+                     ps2.setInt(2, Integer.parseInt(obj.getCpf()));
+                     ps2.setString(3, obj.getNome());
+                     ps2.setInt(4, obj.getCfe());
                      
                      ps2.executeUpdate();
                      return true;
@@ -46,16 +49,17 @@ public class Professor_RN {
        
        
 //EDITAR------------------------------------------------------------------------
-       public boolean editarEndereco(Professor_VO obj) throws Exception
+       public boolean editarProfessor(Professor_VO obj) throws Exception
        {
               try
               {
                      conex = new Conexao();
-                     PreparedStatement  ps2 = conex.conectar().prepareCall("{call dbo.updateEndereco_sp(?,?,?)}");
+                     PreparedStatement  ps2 = conex.conectar().prepareCall("{call dbo.updateProfessor_sp(?,?,?,?)}");
                      
                      ps2.setInt(1, obj.getCodProfessor());
-                     ps2.setInt(2, obj.getCpf());
-                     ps2.setString(3, obj.getDisciplinas());
+                     ps2.setInt(2, Integer.parseInt(obj.getCpf()));
+                     ps2.setString(3, obj.getNome());
+                     ps2.setInt(4, obj.getCfe());
                      
                      ps2.executeUpdate();
                      return true;
@@ -69,14 +73,14 @@ public class Professor_RN {
        
        
 //EXCLUIR------------------------------------------------------------------------
-       public boolean excluirEndereco(Professor_VO obj) throws Exception
+       public boolean excluirProfessor(Professor_VO obj) throws Exception
        {
               try
               {
                      conex = new Conexao();
-                     PreparedStatement ps2 = conex.conectar().prepareCall("{call dbo.removeEndereco_sp(?)}");
+                     PreparedStatement ps2 = conex.conectar().prepareCall("{call dbo.removeProfessor_sp(?)}");
                      
-                     ps2.setInt(1, obj.getIdHistorico());
+                     ps2.setInt(1, obj.getCodProfessor());
 
                      ps2.executeUpdate();
                      return true;
@@ -85,5 +89,32 @@ public class Professor_RN {
               {
                      throw new Exception("Falha ao editar acessos do gerente:\n" + e.getMessage());
               }
+       }
+       
+       
+       public boolean getProfessor(Professor_VO obj) throws Exception
+       {
+            try
+            {
+                conex = new Conexao();
+                Statement stm = conex.conectar().createStatement();
+                ResultSet rs = stm.executeQuery("select * from [BDGrupo2].[dbo].[UNI_Professor] where COD_PROFESSOR = " + obj.getCodProfessor());
+                
+                while (rs.next())
+                     {
+                        obj.setCfe(rs.getInt("CFE"));
+                        obj.setCpf(Integer.toString(rs.getInt("CPF")));
+                        obj.setNome(rs.getString("NOME"));
+                                   
+                        return true;
+                     }
+                    
+                return true;
+                            
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Falha ao editar acessos do gerente:\n" + e.getMessage());
+            }
        }
 }

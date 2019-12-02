@@ -6,7 +6,9 @@
 package projeto.model;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import projetobd.Model.Conexao;
 
 /**
@@ -47,7 +49,7 @@ public class Disciplina_RN {
        
        
 //EDITAR------------------------------------------------------------------------
-       public boolean editarDepartamento(Disciplina_VO obj) throws Exception
+       public boolean editarDisciplina(Disciplina_VO obj) throws Exception
        {
               try
               {
@@ -71,7 +73,7 @@ public class Disciplina_RN {
        
        
 //EXCLUIR------------------------------------------------------------------------
-       public boolean excluirDepartamento(Disciplina_VO obj) throws Exception
+       public boolean excluirDisciplina(Disciplina_VO obj) throws Exception
        {
               try
               {
@@ -87,5 +89,31 @@ public class Disciplina_RN {
               {
                      throw new Exception("Falha ao editar acessos do gerente:\n" + e.getMessage());
               }
+       }
+       
+       public boolean getDisciplina(Disciplina_VO obj) throws Exception
+       {
+            try
+            {
+                conex = new Conexao();
+                Statement stm = conex.conectar().createStatement();
+                ResultSet rs = stm.executeQuery("select * from [BDGrupo2].[dbo].[UNI_Disciplina] where Id_Disciplina = " + obj.getIdDisciplina());
+                
+                while (rs.next())
+                     {
+                        obj.setFkCodCurso(rs.getString("FK_COD_CURSO"));
+                        obj.setNomeDisciplina(rs.getString("NOME_DISCIPLINA"));
+                        obj.setPreRequisitos(rs.getInt("PRE_REQUISITOS"));
+                                   
+                        return true;
+                     }
+                    
+                return true;
+                            
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Falha ao editar acessos do gerente:\n" + e.getMessage());
+            }
        }
 }

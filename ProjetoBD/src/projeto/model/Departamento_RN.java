@@ -6,7 +6,9 @@
 package projeto.model;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import projetobd.Model.Conexao;
 
 /**
@@ -83,5 +85,29 @@ public class Departamento_RN {
               {
                      throw new Exception("Falha ao editar acessos do gerente:\n" + e.getMessage());
               }
+       }
+       
+       public boolean getDepartamento(Departamento_VO obj) throws Exception
+       {
+            try
+            {
+                conex = new Conexao();
+                Statement stm = conex.conectar().createStatement();
+                ResultSet rs = stm.executeQuery("select * from [BDGrupo2].[dbo].[UNI_Departamento] where ID_DEPARTAMENTO = " + obj.getIdDepartamento());
+                
+                while (rs.next())
+                     {
+                        obj.setNomeDepartamento(rs.getString("NOME_DEPARTAMENTO"));
+                                   
+                        return true;
+                     }
+                    
+                return true;
+                            
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Falha ao editar acessos do gerente:\n" + e.getMessage());
+            }
        }
 }

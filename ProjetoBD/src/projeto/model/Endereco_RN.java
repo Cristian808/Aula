@@ -6,7 +6,9 @@
 package projeto.model;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import projetobd.Model.Conexao;
 
 /**
@@ -92,5 +94,34 @@ public class Endereco_RN {
               {
                      throw new Exception("Falha ao editar acessos do gerente:\n" + e.getMessage());
               }
+       }
+       
+       public boolean getEndereco(Endereco_VO obj) throws Exception
+       {
+            try
+            {
+                conex = new Conexao();
+                Statement stm = conex.conectar().createStatement();
+                ResultSet rs = stm.executeQuery("select * from [BDGrupo2].[dbo].[UNI_Endereco] where Id_Endereco = " + obj.getIdEndereco());
+                
+                while (rs.next())
+                     {
+                        obj.setBairro(rs.getString("BAIRRO"));
+                        obj.setCep(rs.getInt("CEP"));
+                        obj.setComplemento(rs.getString("COMPLEMENTO"));
+                        obj.setFkAluno(rs.getString("FK_ALUNO"));
+                        obj.setNumero(rs.getInt("NUMERO"));
+                        obj.setRua(rs.getString("RUA"));
+                                   
+                        return true;
+                     }
+                    
+                return true;
+                            
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Falha ao editar acessos do gerente:\n" + e.getMessage());
+            }
        }
 }

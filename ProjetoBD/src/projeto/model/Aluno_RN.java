@@ -94,36 +94,30 @@ public class Aluno_RN {
        
        
 //LOGINS------------------------------------------------------------------------
-//       public boolean logar(Aluno_VO obj) throws Exception
-//       {
-//              Aluno_VO alunoVO = obj;
-//              try
-//              {
-//                     conex = new Conexao();
-//                     Statement stm = conex.conectar().createStatement();
-//
-//                     ResultSet rs = stm.executeQuery("Select * from Aluno where PK_GRR = " + "'" + alunoVO.getPk_grr() + "'");
-//                     while (rs.next())
-//                     {
-//                            if (alunoVO.getSenha().equals(rs.getString("SENHA")))
-//                            {
-//                                   alunoVO.setNome(rs.getString("NOME"));
-//                                   alunoVO.setNomesocial(rs.getString("NOMESOCIAL"));
-//                                   alunoVO.setCpf(rs.getString("CPF"));
-//                                   alunoVO.setDatanascimento(rs.getDate("DATANASCIMENTO"));
-//                                   alunoVO.setSexo(rs.getString("SEXO"));
-//                                   alunoVO.setSenha(rs.getString("SENHA"));
-//                                   
-//                                   return true;
-//                            }
-//                            throw new Exception("Senha incorreta");
-//                     }
-//              }
-//              catch (SQLException e)
-//              {
-//                     throw new Exception("Falha no login do Gerente:\n"+e.getMessage());
-//              }
-//              return false;
-//       }
-//       
+      public boolean getAluno(Aluno_VO obj) throws Exception
+       {
+            try
+            {
+                conex = new Conexao();
+                Statement stm = conex.conectar().createStatement();
+                ResultSet rs = stm.executeQuery("select * from [BDGrupo2].[dbo].[UNI_Aluno] where MATRICULA = " + obj.getMatricula());
+                
+                while (rs.next())
+                     {
+                        obj.setFkHistorico(rs.getInt("FK_HISTORICO"));
+                        obj.setFkTurma(rs.getInt("FK_TURMA"));
+                        obj.setNome(rs.getString("NOME"));
+                        obj.setTipoAdmissao(rs.getString("TIPO_ADMISSAO"));
+                                   
+                        return true;
+                     }
+                    
+                return true;
+                            
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Falha ao editar acessos do gerente:\n" + e.getMessage());
+            }
+       }
 }

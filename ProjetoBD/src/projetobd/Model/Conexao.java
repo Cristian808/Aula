@@ -15,8 +15,9 @@ public class Conexao {
               try
               {
                      Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-                     con = DriverManager.getConnection("jdbc:sqlserver://201.30.92.194\\BDUniversidade:1433;databaseName=BDUniversidade","sbd","sbd01");
-                     //con = DriverManager.getConnection("jdbc:firebirdsql:localhost/3050:C:/SADGR/diretor/basedados/CRAM.FDB", "sysdba", "masterkey");
+//                     con = DriverManager.getConnection("jdbc:sqlserver://201.30.92.194\\BDUniversidade:1433;databaseName=BDUniversidade","sbd","sbd01");;
+//                     con = DriverManager.getConnection("jdbc:firebirdsql:localhost/3050:C:/SADGR/diretor/basedados/CRAM.FDB", "sysdba", "masterkey");
+                        con = DriverManager.getConnection("jdbc:sqlserver://201.30.92.194\\BDGrupo2:1433;databaseName=BDGrupo2", "sbdgrupo2", "log22**11");    
               }
               catch (ClassNotFoundException e)
               {

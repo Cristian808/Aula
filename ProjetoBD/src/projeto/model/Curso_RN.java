@@ -6,7 +6,9 @@
 package projeto.model;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import projetobd.Model.Conexao;
 
 /**
@@ -89,5 +91,32 @@ public class Curso_RN {
               {
                      throw new Exception("Falha ao editar acessos do gerente:\n" + e.getMessage());
               }
+       }
+       
+       public boolean getCurso(Curso_VO obj) throws Exception
+       {
+            try
+            {
+                conex = new Conexao();
+                Statement stm = conex.conectar().createStatement();
+                ResultSet rs = stm.executeQuery("select * from [BDGrupo2].[dbo].[UNI_CURSO] where COD_CURSO = " + obj.getCodCurso());
+                
+                while (rs.next())
+                     {
+                        obj.setCreditosConclusao(rs.getInt("CREDITOS_CONCLUSAO"));
+                        obj.setDuracao(rs.getInt("DURACAO"));
+                        obj.setFkDepartamento(rs.getInt("FK_DEPARTAMENTO"));
+                        obj.setNomeCurso(rs.getString("NOME_CURSO"));
+                                   
+                        return true;
+                     }
+                    
+                return true;
+                            
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Falha ao editar acessos do gerente:\n" + e.getMessage());
+            }
        }
 }
